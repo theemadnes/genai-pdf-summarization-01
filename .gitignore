@@ -2,3 +2,7 @@ pdf-to-text/bin
 pdf-to-text/include
 pdf-to-text/lib
 pdf-to-text/pyvenv.cfg
+vertex-pdf-summary-example/bin
+vertex-pdf-summary-example/include
+vertex-pdf-summary-example/lib
+vertex-pdf-summary-example/pyvenv.cfg

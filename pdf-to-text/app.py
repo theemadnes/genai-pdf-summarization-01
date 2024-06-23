@@ -1,6 +1,6 @@
 from pypdf import PdfReader
 
-reader = PdfReader("../pdf-samples/drylab.pdf")
+reader = PdfReader("../pdf-samples/romeo_and_juliet.pdf")
 #number_of_pages = len(reader.pages)
 text = ""
 for page in reader.pages:
