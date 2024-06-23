@@ -1,1 +1,4 @@
 pypdf
+vertexai
+python-dotenv
+google-generativeai
