@@ -13,6 +13,12 @@ load_dotenv()
 # set model version
 MODEL_VERSION = 'gemini-1.5-flash'
 
+# check to see if $PORT is set, and if so, set Gradio env var to use it
+if "PORT" in os.environ:
+  os.environ["GRADIO_SERVER_PORT"] = os.getenv(
+    "PORT"
+  )
+
 # gather region information
 METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
 METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
