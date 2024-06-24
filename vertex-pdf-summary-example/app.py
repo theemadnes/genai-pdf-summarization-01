@@ -19,12 +19,13 @@ prompt = "Please summarize the following text for me:"
 # Combine the prompt and text
 full_text = prompt + "\n" + text
 
+'''
 # Define the model to use (change for different models)
 project_id = os.getenv("PROJECT_ID")  # Replace with your project ID
 location = os.getenv("REGION")  # Specify the location
 publisher = "google"
 model = "gemini-1.5-flash-001"  # Flash summarization model
-
+'''
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 '''
