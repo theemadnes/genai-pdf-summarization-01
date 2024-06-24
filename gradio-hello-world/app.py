@@ -10,6 +10,9 @@ from urllib3 import Retry
 
 load_dotenv()
 
+# set model version
+MODEL_VERSION = 'gemini-1.5-flash'
+
 # gather region information
 METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
 METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
@@ -33,7 +36,7 @@ except:
 # Configure the API key (replace with your actual key)
 genai.configure(api_key=os.getenv("API_KEY"))
 
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel(MODEL_VERSION)
 
 def process_pdf(pdf_file):
   reader = PdfReader(pdf_file)
@@ -55,8 +58,8 @@ interface = gr.Interface(
   fn=process_pdf,
   inputs=gr.File(label="Upload PDF"),
   outputs="text",
-  title=f"PDF Summarization App using Gemini Flash from {zone}",
-  description="Upload a PDF file for text summarization using Gemini Flash."
+  title=f"PDF Summarization App using {MODEL_VERSION} from zone {zone}",
+  description="Upload a PDF file for text summarization using Gemini."
 )
 
 # Launch the Gradio app
