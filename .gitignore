@@ -9,3 +9,10 @@ vertex-pdf-summary-example/lib
 vertex-pdf-summary-example/pyvenv.cfg
 vertex-pdf-summary-example/lib64
 vertex-pdf-summary-example/.env
+gradio-hello-world/bin
+gradio-hello-world/include
+gradio-hello-world/lib
+gradio-hello-world/pyvenv.cfg
+gradio-hello-world/lib64
+gradio-hello-world/.env
+gradio-hello-world/share
