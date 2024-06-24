@@ -3,8 +3,32 @@ from pypdf import PdfReader
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+import requests
+from requests.adapters import HTTPAdapter
+import urllib3
+from urllib3 import Retry
 
 load_dotenv()
+
+# gather region information
+METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
+METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
+
+session = requests.Session()
+adapter = HTTPAdapter(max_retries=Retry(total=3, backoff_factor=1, allowed_methods=['GET'])) #, status_forcelist=[429, 500, 502, 503, 504]))
+session.mount("http://", adapter)
+session.mount("https://", adapter)
+
+zone = "unknown" # default value
+
+try:
+  # grab info from GCE metadata
+  r = session.get(METADATA_URL + '?recursive=true', headers=METADATA_HEADERS)
+  if r.ok:
+    print("Successfully accessed GCE metadata endpoint.")
+    zone = r.json()['instance']['zone'].split('/')[-1]
+except:
+  print("Unable to access GCE metadata endpoint.")
 
 # Configure the API key (replace with your actual key)
 genai.configure(api_key=os.getenv("API_KEY"))
@@ -31,7 +55,7 @@ interface = gr.Interface(
   fn=process_pdf,
   inputs=gr.File(label="Upload PDF"),
   outputs="text",
-  title="PDF Summarization App using Gemini Flash",
+  title=f"PDF Summarization App using Gemini Flash from {zone}",
   description="Upload a PDF file for text summarization using Gemini Flash."
 )
 
