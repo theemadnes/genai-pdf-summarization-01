@@ -16,3 +16,4 @@ gradio-hello-world/pyvenv.cfg
 gradio-hello-world/lib64
 gradio-hello-world/.env
 gradio-hello-world/share
+gradio-hello-world/flagged
