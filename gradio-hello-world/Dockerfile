@@ -1,17 +1,22 @@
-FROM python:3.12.4-slim
+FROM cgr.dev/chainguard/python:latest-dev as dev
+#FROM python:3.12.4-slim
 
 #MAINTAINER Alex Mattson "alex.mattson@gmail.com"
 
-COPY ./requirements.txt /app/requirements.txt
-
 WORKDIR /app
+
+RUN python -m venv venv
+ENV PATH="/app/venv/bin":$PATH
+
+COPY ./requirements.txt /app/requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY ./app.py /app/app.py
+FROM cgr.dev/chainguard/python:latest
 
-RUN addgroup --system appuser && adduser --system appuser --ingroup appuser
-USER appuser
+COPY app.py app.py
+COPY --from=dev /app/venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
 
 ENTRYPOINT [ "python" ]
 
