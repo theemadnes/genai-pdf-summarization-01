@@ -18,6 +18,7 @@ if "PORT" in os.environ:
   os.environ["GRADIO_SERVER_PORT"] = os.getenv(
     "PORT"
   )
+  print(f"Setting Gradio server port to {os.getenv('PORT')}")
 
 # gather region information
 METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
@@ -65,8 +66,9 @@ interface = gr.Interface(
   inputs=gr.File(label="Upload PDF"),
   outputs="text",
   title=f"PDF Summarization App using {MODEL_VERSION} from zone {zone}",
-  description="Upload a PDF file for text summarization using Gemini."
+  description="Upload a PDF file for text summarization using Gemini.",
+  flagging_dir="/tmp/flagged" # directory to store flagged files, modified to store in tmp for Cloud Run
 )
 
 # Launch the Gradio app
-interface.launch()
+interface.launch(server_name="0.0.0.0") # don't use 127.0.0.1
