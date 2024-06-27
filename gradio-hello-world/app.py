@@ -51,10 +51,12 @@ def process_pdf(text_input, pdf_file):
   for page in reader.pages:
     text += page.extract_text()
 
-  #print(text)
   # Combine the prompt and text
   full_text = text_input + "\n" + text
+  print(model.count_tokens(full_text))
   response = model.generate_content(full_text)
+  print(response.candidates)
+  print(response.prompt_feedback)
   return f"{response.text}"
 
 # Define the interface with file upload and text output
