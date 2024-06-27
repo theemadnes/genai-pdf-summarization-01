@@ -45,25 +45,24 @@ genai.configure(api_key=os.getenv("API_KEY"))
 
 model = genai.GenerativeModel(MODEL_VERSION)
 
-def process_pdf(pdf_file):
+def process_pdf(text_input, pdf_file):
   reader = PdfReader(pdf_file)
   text = ""
   for page in reader.pages:
     text += page.extract_text()
 
-  # Set the prompt for summarization
-  prompt = "Please summarize the following text for me:"
-
+  #print(text)
   # Combine the prompt and text
-  full_text = prompt + "\n" + text
+  full_text = text_input + "\n" + text
   response = model.generate_content(full_text)
-  #filename = pdf_file.name
   return f"{response.text}"
 
 # Define the interface with file upload and text output
 interface = gr.Interface(
   fn=process_pdf,
-  inputs=gr.File(label="Upload PDF"),
+  inputs=[
+    gr.Textbox(label="Enter prompt", lines=1, value="please summarize the entire following text for me"),
+    gr.File(label="Upload PDF")],
   outputs="text",
   title=f"PDF Summarization App using {MODEL_VERSION} from zone {zone}",
   description="Upload a PDF file for text summarization using Gemini.",
