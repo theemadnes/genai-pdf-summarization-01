@@ -11,7 +11,7 @@ from urllib3 import Retry
 load_dotenv()
 
 # set model version
-MODEL_VERSION = 'gemini-1.5-flash'
+MODEL_NAME = 'gemini-1.5-flash'
 
 # check to see if $PORT is set, and if so, set Gradio env var to use it
 if "PORT" in os.environ:
@@ -43,7 +43,7 @@ except:
 # Configure the API key (replace with your actual key)
 genai.configure(api_key=os.getenv("API_KEY"))
 
-model = genai.GenerativeModel(MODEL_VERSION)
+model = genai.GenerativeModel(model_name=MODEL_NAME)
 
 def process_pdf(text_input, pdf_file):
   reader = PdfReader(pdf_file)
@@ -54,7 +54,12 @@ def process_pdf(text_input, pdf_file):
   # Combine the prompt and text
   full_text = text_input + "\n" + text
   print(model.count_tokens(full_text))
-  response = model.generate_content(full_text)
+  response = model.generate_content(full_text, safety_settings={
+        'HATE': 'BLOCK_NONE',
+        'HARASSMENT': 'BLOCK_NONE',
+        'SEXUAL' : 'BLOCK_NONE',
+        'DANGEROUS' : 'BLOCK_NONE'
+    })
   print(response.candidates)
   print(response.prompt_feedback)
   return f"{response.text}"
@@ -63,10 +68,10 @@ def process_pdf(text_input, pdf_file):
 interface = gr.Interface(
   fn=process_pdf,
   inputs=[
-    gr.Textbox(label="Enter prompt", lines=1, value="please summarize the entire following text for me"),
+    gr.Textbox(label="Enter prompt", lines=1, value="please summarize the following text for me"),
     gr.File(label="Upload PDF")],
   outputs="text",
-  title=f"PDF Summarization App using {MODEL_VERSION} from zone {zone}",
+  title=f"PDF Summarization App using {MODEL_NAME} from zone {zone}",
   description="Upload a PDF file for text summarization using Gemini.",
   flagging_dir="/tmp/flagged" # directory to store flagged files, modified to store in tmp for Cloud Run
 )
