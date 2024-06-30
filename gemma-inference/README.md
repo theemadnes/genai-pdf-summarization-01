@@ -18,3 +18,22 @@ kubectl apply -f vllm-2b.yaml
 # wait for the deployment to be ready
 kubectl -n vllm wait --for=condition=Available --timeout=700s deployment/vllm-gemma-deployment
 ```
+
+### testing via curl
+
+```
+kubectl -n vllm port-forward service/llm-service 8000:8000
+
+USER_PROMPT="Java is a"
+
+curl -X POST http://localhost:8000/generate \
+  -H "Content-Type: application/json" \
+  -d @- <<EOF
+{
+    "prompt": "${USER_PROMPT}",
+    "temperature": 0.90,
+    "top_p": 1.0,
+    "max_tokens": 4096
+}
+EOF
+```

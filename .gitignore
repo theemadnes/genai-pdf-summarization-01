@@ -18,3 +18,11 @@ gradio-hello-world/.env
 gradio-hello-world/share
 gradio-hello-world/flagged
 gemma-inference/scratch.txt
+gradio-gemma/bin
+gradio-gemma/include
+gradio-gemma/lib
+gradio-gemma/pyvenv.cfg
+gradio-gemma/lib64
+gradio-gemma/.env
+gradio-gemma/share
+gradio-gemma/flagged

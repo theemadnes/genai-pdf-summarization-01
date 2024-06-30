@@ -1,0 +1,7 @@
+gradio
+pypdf
+langchain
+langchain-community
+langchain-text-splitters
+requests
+openai
