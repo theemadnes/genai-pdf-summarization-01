@@ -26,3 +26,11 @@ gradio-gemma/lib64
 gradio-gemma/.env
 gradio-gemma/share
 gradio-gemma/flagged
+large-text-summarization-example/bin
+large-text-summarization-example/include
+large-text-summarization-example/lib
+large-text-summarization-example/pyvenv.cfg
+large-text-summarization-example/lib64
+large-text-summarization-example/.env
+large-text-summarization-example/share
+large-text-summarization-example/flagged
