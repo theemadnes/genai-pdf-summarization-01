@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-gemma-deployment
+  namespace: vllm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gemma-server
+  template:
+    metadata:
+      labels:
+        app: gemma-server
+        ai.gke.io/model: gemma-2-2b
+        ai.gke.io/inference-server: vllm
+        #examples.ai.gke.io/source: user-guide
+    spec:
+      containers:
+      - name: inference-server
+        image: vllm/vllm-openai:latest
+        resources:
+          requests:
+            cpu: "2"
+            memory: "12Gi"
+            ephemeral-storage: "40Gi"
+            #nvidia.com/gpu: 1
+          limits:
+            cpu: "2"
+            memory: "12Gi"
+            ephemeral-storage: "40Gi"
+            #nvidia.com/gpu: 1
+        command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
+        args:
+        - --model=$(MODEL_ID)
+        - --tensor-parallel-size=1
+        - --port=8000
+        #- --host=0.0.0.0
+        env:
+        - name: MODEL_ID
+          value: google/gemma-2-2b
+        - name: VLLM_ATTENTION_BACKEND
+          value: FLASHINFER
+        - name: HUGGING_FACE_HUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-secret
+              key: hf_api_token
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+      volumes:
+      - name: dshm
+        emptyDir:
+            medium: Memory
+      #nodeSelector:
+      #  cloud.google.com/gke-accelerator: nvidia-l4
+      tolerations:
+      - key: "nvidia.com/gpu"
+        value: "present"
+        #operator: "Exists"
+        effect: "NoSchedule"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llm-service
+  namespace: vllm
+spec:
+  selector:
+    app: gemma-server
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
