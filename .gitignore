@@ -50,3 +50,11 @@ gradio-gemma-v2/lib64
 gradio-gemma-v2/.env
 gradio-gemma-v2/share
 gradio-gemma-v2/flagged
+gradio-vllm-gemma2-2b/bin
+gradio-vllm-gemma2-2b/include
+gradio-vllm-gemma2-2b/lib
+gradio-vllm-gemma2-2b/pyvenv.cfg
+gradio-vllm-gemma2-2b/lib64
+gradio-vllm-gemma2-2b/.env
+gradio-vllm-gemma2-2b/share
+gradio-vllm-gemma2-2b/flagged
